@@ -140,8 +140,11 @@ class TextSummarizer:
             words = text.split()[:max_input_length]
             text = ' '.join(words)
         
-        # Calculate min_length as 30% of max_length
-        min_length = max(30, int(max_length * 0.3))
+        # Calculate min_length as 30% of max_length, never exceeding max_length
+        min_length = min(
+            max(30, int(max_length * 0.3)),
+            max(1, max_length // 2)
+        )
         
         # Generate summary
         summary = self.abstractive_pipeline(

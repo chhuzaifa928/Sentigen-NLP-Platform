@@ -6,6 +6,7 @@ Extracts and classifies named entities from text using spaCy
 import spacy
 from typing import Dict, List, Tuple
 from collections import Counter
+import html
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -95,25 +96,28 @@ class NERExtractor:
             "LANGUAGE": "#F2CC8F"
         }
         
-        # Sort entities by start position (reverse order for replacement)
-        sorted_entities = sorted(entities, key=lambda x: x['start'], reverse=True)
-        
-        result = text
+        # Sort entities by start position (ascending for sequential building)
+        sorted_entities = sorted(entities, key=lambda x: x['start'])
+
+        result_parts = []
+        pos = 0
         for ent in sorted_entities:
+            result_parts.append(html.escape(text[pos:ent['start']]))
             color = colors.get(ent['label'], "#95A5A6")
-            replacement = (
+            result_parts.append(
                 f'<span class="entity" style="background-color: {color}; '
                 f'padding: 2px 6px; border-radius: 4px; color: white; '
                 f'font-weight: 500; margin: 0 2px;" '
-                f'title="{ent["label"]}: {ent["description"]}">'
-                f'{ent["text"]}'
+                f'title="{html.escape(ent["label"])}: {html.escape(ent["description"])}">'
+                f'{html.escape(ent["text"])}'
                 f'<span class="entity-label" style="font-size: 0.7em; '
-                f'margin-left: 4px; opacity: 0.9;">{ent["label"]}</span>'
+                f'margin-left: 4px; opacity: 0.9;">{html.escape(ent["label"])}</span>'
                 f'</span>'
             )
-            result = result[:ent['start']] + replacement + result[ent['end']:]
-        
-        return result
+            pos = ent['end']
+        result_parts.append(html.escape(text[pos:]))
+
+        return ''.join(result_parts)
     
     def _generate_statistics(self, entities: List[Dict], entity_counts: Counter) -> Dict:
         """Generate entity statistics"""

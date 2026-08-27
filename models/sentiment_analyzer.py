@@ -3,8 +3,7 @@ Sentiment Analysis Module
 Performs multi-aspect sentiment analysis using transformer models
 """
 
-from transformers import pipeline, AutoTokenizer, AutoModelForSequenceClassification
-import torch
+from transformers import pipeline
 from typing import Dict, List
 import logging
 
