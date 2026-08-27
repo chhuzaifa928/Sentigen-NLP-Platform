@@ -227,7 +227,7 @@ MIT License
 
 ## 👤 Author
 
-MUHAMMAD JABBAR ALAM
+Chaudhary Huzaifa
 
 ## 🙏 Acknowledgments
 
