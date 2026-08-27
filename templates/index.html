@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SentiGen - Advanced NLP Platform for sentiment analysis, text generation, summarization, and more">
+    <meta name="keywords" content="NLP, sentiment analysis, text generation, AI, machine learning">
+    <meta name="author" content="Your Name">
+    <title>SentiGen - Advanced NLP Platform</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="background-animation"></div>
+    
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo-container">
+                <h1 class="logo">SentiGen</h1>
+            </div>
+            <p class="tagline">Advanced Natural Language Processing Platform</p>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Features Grid -->
+        <div class="features-grid">
+            <!-- Sentiment Analysis -->
+            <div class="feature-card" onclick="openModal('sentiment')">
+                <span class="feature-icon">🎭</span>
+                <h3>Sentiment Analysis</h3>
+                <p>Multi-dimensional sentiment and emotion detection with confidence scores and detailed analysis</p>
+            </div>
+            
+            <!-- Named Entity Recognition -->
+            <div class="feature-card" onclick="openModal('ner')">
+                <span class="feature-icon">🏷️</span>
+                <h3>Named Entity Recognition</h3>
+                <p>Extract and classify entities like people, organizations, locations, and more from text</p>
+            </div>
+            
+            <!-- Text Summarization -->
+            <div class="feature-card" onclick="openModal('summarize')">
+                <span class="feature-icon">📝</span>
+                <h3>Text Summarization</h3>
+                <p>Generate concise summaries using extractive or abstractive methods powered by transformers</p>
+            </div>
+            
+            <!-- Text Generation -->
+            <div class="feature-card" onclick="openModal('generate')">
+                <span class="feature-icon">✨</span>
+                <h3>Text Generation</h3>
+                <p>Generate creative and coherent text using GPT-2 with customizable parameters</p>
+            </div>
+            
+            <!-- Topic Modeling -->
+            <div class="feature-card" onclick="openModal('topics')">
+                <span class="feature-icon">🔍</span>
+                <h3>Topic Modeling</h3>
+                <p>Discover hidden topics in document collections using Latent Dirichlet Allocation</p>
+            </div>
+            
+            <!-- Coming Soon -->
+            <div class="feature-card" style="opacity: 0.6; cursor: not-allowed;">
+                <span class="feature-icon">🚀</span>
+                <h3>More Features</h3>
+                <p>Text classification, question answering, and translation coming soon!</p>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Sentiment Analysis Modal -->
+    <div id="sentimentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🎭 Sentiment Analysis</h2>
+                <button class="close-btn" onclick="closeModal('sentiment')">&times;</button>
+            </div>
+            
+            <div class="form-group">
+                <label for="sentimentText">Enter text to analyze</label>
+                <textarea id="sentimentText" placeholder="Type or paste your text here..."></textarea>
+            </div>
+            
+            <button class="btn btn-primary" onclick="analyzeSentiment()">Analyze Sentiment</button>
+            
+            <div id="sentimentLoading" class="loading">
+                <div class="spinner"></div>
+                <p>Analyzing sentiment...</p>
+            </div>
+            
+            <div id="sentimentResults" class="results"></div>
+        </div>
+    </div>
+    
+    <!-- NER Modal -->
+    <div id="nerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🏷️ Named Entity Recognition</h2>
+                <button class="close-btn" onclick="closeModal('ner')">&times;</button>
+            </div>
+            
+            <div class="form-group">
+                <label for="nerText">Enter text to extract entities</label>
+                <textarea id="nerText" placeholder="Type or paste your text here..."></textarea>
+            </div>
+            
+            <button class="btn btn-primary" onclick="extractEntities()">Extract Entities</button>
+            
+            <div id="nerLoading" class="loading">
+                <div class="spinner"></div>
+                <p>Extracting entities...</p>
+            </div>
+            
+            <div id="nerResults" class="results"></div>
+        </div>
+    </div>
+    
+    <!-- Summarization Modal -->
+    <div id="summarizeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📝 Text Summarization</h2>
+                <button class="close-btn" onclick="closeModal('summarize')">&times;</button>
+            </div>
+            
+            <div class="form-group">
+                <label for="summarizeText">Enter text to summarize</label>
+                <textarea id="summarizeText" placeholder="Type or paste your text here..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="summarizeMethod">Summarization Method</label>
+                <select id="summarizeMethod">
+                    <option value="abstractive">Abstractive (AI-generated summary)</option>
+                    <option value="extractive">Extractive (Key sentences)</option>
+                </select>
+            </div>
+            
+            <button class="btn btn-primary" onclick="summarizeText()">Summarize</button>
+            
+            <div id="summarizeLoading" class="loading">
+                <div class="spinner"></div>
+                <p>Generating summary...</p>
+            </div>
+            
+            <div id="summarizeResults" class="results"></div>
+        </div>
+    </div>
+    
+    <!-- Text Generation Modal -->
+    <div id="generateModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✨ Text Generation</h2>
+                <button class="close-btn" onclick="closeModal('generate')">&times;</button>
+            </div>
+            
+            <div class="form-group">
+                <label for="generatePrompt">Enter prompt</label>
+                <textarea id="generatePrompt" rows="4" placeholder="Start your text here, and AI will continue it..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="temperature">Temperature: <span id="temperatureValue">0.7</span></label>
+                <input type="range" id="temperature" min="0.1" max="1.5" step="0.1" value="0.7">
+                <p class="text-muted" style="font-size: 0.85rem; margin-top: 0.5rem;">
+                    Lower = more focused, Higher = more creative
+                </p>
+            </div>
+            
+            <div class="form-group">
+                <label for="maxLength">Max Length: <span id="maxLengthValue">100</span> tokens</label>
+                <input type="range" id="maxLength" min="50" max="200" step="10" value="100">
+            </div>
+            
+            <button class="btn btn-primary" onclick="generateText()">Generate Text</button>
+            
+            <div id="generateLoading" class="loading">
+                <div class="spinner"></div>
+                <p>Generating text...</p>
+            </div>
+            
+            <div id="generateResults" class="results"></div>
+        </div>
+    </div>
+    
+    <!-- Topic Modeling Modal -->
+    <div id="topicsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🔍 Topic Modeling</h2>
+                <button class="close-btn" onclick="closeModal('topics')">&times;</button>
+            </div>
+            
+            <p class="text-secondary mb-2">Enter multiple documents to discover hidden topics</p>
+            
+            <div id="documentsContainer">
+                <div class="form-group">
+                    <label>Document 1</label>
+                    <textarea class="topic-document" rows="3" placeholder="Enter document text..."></textarea>
+                </div>
+            </div>
+            
+            <button class="btn" style="background: rgba(102, 126, 234, 0.2); color: white; margin-bottom: 1rem;" onclick="addDocument()">
+                + Add Document
+            </button>
+            
+            <div class="form-group">
+                <label for="numTopics">Number of Topics: <span id="numTopicsValue">3</span></label>
+                <input type="range" id="numTopics" min="2" max="10" step="1" value="3">
+            </div>
+            
+            <button class="btn btn-primary" onclick="discoverTopics()">Discover Topics</button>
+            
+            <div id="topicsLoading" class="loading">
+                <div class="spinner"></div>
+                <p>Discovering topics...</p>
+            </div>
+            
+            <div id="topicsResults" class="results"></div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer style="text-align: center; padding: 3rem 0; margin-top: 4rem; border-top: 1px solid var(--border-color);">
+        <div class="container">
+            <p class="text-secondary">
+                Built with ❤️ using FastAPI, Transformers, spaCy, and modern web technologies
+            </p>
+            <p class="text-muted" style="font-size: 0.9rem; margin-top: 0.5rem;">
+                © 2024 SentiGen NLP Platform. All rights reserved.
+            </p>
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
